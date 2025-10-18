@@ -1,0 +1,69 @@
+! AdGuard custom filter — Kill Smart App Banners & "Open in App" promos
+! Works on Safari iOS/macOS with AdGuard. Place in a custom filter list.
+! ---------------------------------------------------------------
+! 1) HARD BLOCK: strip the HTTP response header that triggers the native iOS Smart App Banner.
+!    This is the ONLY reliable way to stop Safari's blue "MỞ" banner.
+! ---------------------------------------------------------------
+||reddit.com^$removeheader=apple-itunes-app
+||redd.it^$removeheader=apple-itunes-app
+||tiktok.com^$removeheader=apple-itunes-app
+||instagram.com^$removeheader=apple-itunes-app
+||facebook.com^$removeheader=apple-itunes-app
+||m.facebook.com^$removeheader=apple-itunes-app
+||messenger.com^$removeheader=apple-itunes-app
+||x.com^$removeheader=apple-itunes-app
+||twitter.com^$removeheader=apple-itunes-app
+||youtube.com^$removeheader=apple-itunes-app
+||youtu.be^$removeheader=apple-itunes-app
+||medium.com^$removeheader=apple-itunes-app
+||pinterest.com^$removeheader=apple-itunes-app
+||linkedin.com^$removeheader=apple-itunes-app
+||zalo.me^$removeheader=apple-itunes-app
+||shopee.vn^$removeheader=apple-itunes-app
+||shopee.com^$removeheader=apple-itunes-app
+||lazada.vn^$removeheader=apple-itunes-app
+||zalo.me^$removeheader=apple-itunes-app
+||telegram.org^$removeheader=apple-itunes-app
+||telemetry.twitter.com^$removeheader=apple-itunes-app
+
+! (Optional) Other header names some sites experiment with — harmless if absent
+||*^$removeheader=x-ios-deeplink,domain=~localhost|~127.0.0.1
+||*^$removeheader=x-app-banner,domain=~localhost|~127.0.0.1
+
+! ---------------------------------------------------------------
+! 2) COSMETIC: hide in‑page "open in app" / promo bars (useful on desktop or where header not used)
+!    Note: cosmetic hiding cannot stop Safari's native banner; header stripping above is key.
+! ---------------------------------------------------------------
+! Generic patterns
+##.smartbanner, ##.smart-app-banner, ##.app-banner, ##.app_banner, ##.appBanner, ##.app-download-banner, ##.open-in-app, ##.open-in-app-banner, ##.OpenInAppBanner, ##.app-promo, ##.appPromo, ##.pwa-install-banner, ##.mobile-app-banner, ##.appInstallPrompt
+##[data-testid*="smartbanner"], ##[data-testid*="app-banner"], ##[id*="smartbanner"], ##[id*="app-banner"], ##[class*="SmartBanner"], ##[class*="smartbanner"], ##[class*="openInApp"], ##[class*="open-in-app"], ##[class*="AppInstall"], ##[class*="xpromo"]
+
+! Reddit web promos
+reddit.com##.xpromo, reddit.com##.xPromoNSFW, reddit.com##shreddit-explore-talks
+reddit.com##shreddit-async-loader[xpromo], reddit.com##shreddit-xpromo, reddit.com##shreddit-banner
+
+! Medium top promos
+medium.com##.l.m.p
+medium.com##header[role="banner"] div:has(a[href*="app"])
+
+! TikTok
+tiktok.com##div[data-e2e*="open"], tiktok.com##a[href*="app.tiktok.com"], tiktok.com##div[class*="AppPromo"], tiktok.com##div[class*="InstallApp"]
+
+! Instagram (when shown)
+instagram.com##div:has(a[href*="app.store"]) 
+instagram.com##div:has-text(/Open in App|Mở trong ứng dụng/i)
+
+! Facebook
+facebook.com##div:has-text(/Open in App|Mở trong ứng dụng/i)
+m.facebook.com##div:has-text(/Open in App|Mở trong ứng dụng/i)
+
+! YouTube
+youtube.com##ytd-banner-promo-renderer, youtube.com##div:has-text(/Open in App|Mở trong ứng dụng/i)
+
+! LinkedIn / Pinterest
+linkedin.com##div:has-text(/Open in App|Mở trong ứng dụng/i)
+pinterest.com##div:has-text(/Open in App|Mở trong ứng dụng/i)
+
+! Shopee / Lazada (VN)
+shopee.vn##div:has-text(/Mở app|Mở ứng dụng|Tải ứng dụng/i)
+lazada.vn##div:has-text(/Mở app|Mở ứng dụng|Tải ứng dụng/i)
